@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:insert="blocks/head :: head"></head>
+<body>
+<header>
+    <title> Добавление фильма </title>
+</header>
+
+<div class="container-fluid">
+    <div class="row row-main">
+        <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+
+            <nav id="sidebarMenu" th:insert="blocks/sidebarMenu :: sidebarMenu"></nav>
+        </div>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                <div class="container mt-5 mb-5">
+                    <h1>Добавление фильма</h1>
+                    <form th:action="@{/film/add}" method="post" enctype="multipart/form-data" class="edit-film">
+
+                        <br><input type="text" name="nameFilm" placeholder="Введите название фильма"
+                                   class="form-control">
+                        <br>
+                        <div class="container p-0">
+                            <select name="stars">
+                                <option selected value="Не выбрано">Выберите количество звезд</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+
+
+                        <br><input type="date" name="releaseDate" pattern="yyyy-MM-dd" placeholder="Введите дату выхода"
+                                   class="form-control">
+                        <!--                        <br><input type="text" name="genre" placeholder="Введите жанр" class="form-control">-->
+
+                        <br>
+                        <div class="container p-0">
+                                <select name="genre">
+                                    <option selected value="Не выбрано">Выберите жанр</option>
+                                    <option>Комедия</option>
+                                    <option>Драма</option>
+                                </select>
+                        </div>
+
+
+                        <br><input type="text" name="distributor" placeholder="Введите дистрибьютора"
+                                   class="form-control">
+                        <br><input type="text" name="countViewer" placeholder="Введите количество экранов"
+                                   class="form-control">
+                        <br><input type="text" name="countShows" placeholder="Введите количество показов"
+                                   class="form-control">
+                        <br><input type="text" name="countFees" placeholder="Введите количество сборов"
+                                   class="form-control">
+<!--                        <br><input type="text" name="ageLimit" placeholder="Введите возрастное ограничение"-->
+<!--                                   class="form-control">-->
+
+                        <div class="container p-0">
+                            <select name="ageLimit">
+                                <option selected value="Не выбрано">Выберите возрастное ограничение</option>
+                                <option value="0">0+</option>
+                                <option value="6">6+</option>
+                                <option value="12">12+</option>
+                                <option value="16">16+</option>
+                                <option value="18">18+</option>
+                            </select>
+                        </div>
+
+
+                        <br>
+                        <p> Выберите киносети, которые показывают фильм:</p>
+                        <div class="film-checkbox">
+                            <td th:each="el : ${filmnet}">
+                                <div>
+                                    <input type="checkbox" class="custom-checkbox" th:id="${el.id}"
+                                           th:name="${el.nameFilmNet}">
+                                    <label th:for="${el.id}" th:text="${el.nameFilmNet}"></label>
+                                </div>
+                            </td>
+                            </td>
+                        </div>
+
+                        <br><input type="file" name="file" id="file" class="input-file">
+                        <label for="file" class="btn btn-tertiary js-labelFile">
+                            <i class="icon fa fa-check"></i>
+                            <span class="js-fileName">Выберите логотип для фильма</span>
+                        </label>
+
+                        <!--                        <img id="upload-img" align="center" width="150" src="/img/logo.png">-->
+
+
+                        <br><br>
+                        <button type="submit" class="btn btn-orange mt-10">Добавить фильм</button>
+
+                    </form>
+                </div>
+            </div>
+        </main>
+
+
+    </div>
+</div>
+<script>
+    $('tr[data-href]').on("click", function () {
+        document.location = $(this).data('href');
+    });
+
+    (function () {
+        'use strict';
+        $('.input-file').each(function () {
+            var $input = $(this),
+                $label = $input.next('.js-labelFile'),
+                labelVal = $label.html();
+
+            $input.on('change', function (element) {
+                var fileName = '';
+                if (element.target.value) {
+                    let path = element.target.value
+                    fileName = path.split('\\').pop();
+                    // console.log(element.target.value);
+                    // $('#upload-img').attr('src', path)
+                }
+                fileName ? $label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
+
+            });
+        });
+
+    })();
+
+    /*Dropdown Menu*/
+    $('.dropdown').click(function () {
+        $(this).attr('tabindex', 1).focus();
+        $(this).toggleClass('active');
+        $(this).find('.dropdown-menu').slideToggle(300);
+    });
+    $('.dropdown').focusout(function () {
+        $(this).removeClass('active');
+        $(this).find('.dropdown-menu').slideUp(300);
+    });
+    $('.dropdown .dropdown-menu li').click(function () {
+        $(this).parents('.dropdown').find('span').text($(this).text());
+        $(this).parents('.dropdown').find('input').attr('value', $(this).attr('id'));
+    });
+    /*End Dropdown Menu*/
+
+
+    $('.dropdown-menu li').click(function () {
+        var input = '<strong>' + $(this).parents('.dropdown').find('input').val() + '</strong>',
+            msg = '<span class="msg">Hidden input value: ';
+        $('.msg').html(msg + input + '</span>');
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:insert="blocks/head :: head"></head>
+<body>
+<header>
+    <title> Редактирование пользователя </title>
+</header>
+
+<div class="container-fluid">
+    <div class="row row-main">
+        <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+            <nav id="sidebarMenu" th:insert="blocks/sidebarMenu :: sidebarMenu"></nav>
+        </div>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="form-edit-user">
+                <div class="text-center">
+                    <form action="/user" method="post">
+                        <h1 class="h3 mb-3 fw-normal">Редактирование профиля </h1>
+
+                        <div class="form-floating">
+                            <input type="text" name="username" class="form-control" th:value="${user.username}">
+                        </div>
+
+                        <div class="role-checkbox">
+                            <td th:each="role : ${roles}">
+                                <input type="checkbox" class="custom-checkbox" th:id="${role}" th:name="${role}"
+                                       th:checked="${#lists.contains(user.roles, role)}">
+                                <label th:for="${role}" th:text="${role}"></label>
+                            </td>
+
+                        </div>
+                        <button class="btn btn-orange" type="submit">Save</button>
+                        <input type="hidden" th:value="${user.id}" name="id">
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+
+</body>
+

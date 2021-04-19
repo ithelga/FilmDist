@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="blocks/head :: head"></head>
+
+
+<body>
+<header>
+    <title>Кинопрокат</title>
+</header>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+            <nav id="sidebarMenu" th:insert="blocks/sidebarMenu :: sidebarMenu"></nav>
+        </div>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                <h2>Статистика</h2>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <nav class="navbar navbar-expand" aria-label="Second navbar example">
+                        <div class="container-fluid">
+                            <div class="collapse navbar-collapse" id="navbarsExample02">
+                                <ul class="navbar-nav me-auto p-3">
+                                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                                        <a class="nav-link active" aria-current="page"
+                                           th:href="@{/user}">Пользователи</a>
+                                    </li>
+
+                                </ul>
+                                <form>
+                                    <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                                </form>
+                                <ul class="navbar-nav me-auto p-3">
+
+
+                                    <li sec:authorize="isAuthenticated ()" class="nav-item">
+                                        <a class="nav-link active" aria-current="page" th:href="@{/logout}">Выйти</a>
+                                    </li>
+
+                                    <li sec:authorize="!isAuthenticated ()" class="nav-item">
+                                        <a class="nav-link active" aria-current="page" th:href="@{/login}">Войти</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </nav>
+
+
+                </div>
+            </div>
+
+
+            <div class="table-inverse">
+                <table class="table table-sm table-hover">
+                    <thead>
+                    <tr>
+                        <div class="head_table">
+
+                            <th></th>
+                            <th class="th_head">
+                                <button class="btn btn-light btn p-0 m-0">
+                                    Название
+                                    <!--                            <img class="img-fluid align-bottom" src="filter.svg" width="25">-->
+
+
+                                </button>
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </div>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <div th:each="el: ${films}">
+                        <tr th:data-href="'/film/' + ${el.id}">
+                            <td class="film-name" th:text="${el.nameFilm}"></td>
+                            <td th:text="${el.distributor}"></td>
+                            <td th:text="${el.releaseDate}"></td>
+                            <td th:text="${el.countFees}"></td>
+                            <td th:text="${el.countShows}"></td>
+                            <td th:text="${el.countViewer}"></td>
+                        </tr>
+                    </div>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </main>
+    </div>
+</div>
+<script>
+    $('tr[data-href]').on("click", function () {
+        document.location = $(this).data('href');
+    });
+</script>
+
+</body>
+</html>

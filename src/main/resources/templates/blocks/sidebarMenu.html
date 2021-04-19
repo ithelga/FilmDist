@@ -1,0 +1,45 @@
+
+<nav id="sidebarMenu" th:fragment="sidebarMenu">
+    <a class="ui-menu-icon" href="/">
+        <img align="center" src="/img/icon.png" height="70">
+    </a>
+    <a class="navbar-brand " href="">
+        <h1>FilmDist</h1></a>
+    <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" th:href="@{/}">
+                    <span data-feather="home"></span>
+                    Кинопрокат
+                </a>
+            </li>
+
+            <li class="nav-item" href="#">
+                <a class="nav-link" th:href="@{/filmpremiere}">
+                    <span data-feather="shopping-cart"></span>
+                    Скоро в кино
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/statistic}">
+                    <span data-feather="users"></span>
+                    Статистика
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/filmnet}">
+                    <span data-feather="bar-chart-2"></span>
+                    Киносеть
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/about-author}">
+                    <span data-feather="bar-chart-2"></span>
+                    Об авторе
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+</nav>
