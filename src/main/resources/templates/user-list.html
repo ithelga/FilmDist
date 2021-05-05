@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:insert="blocks/head :: head"></head>
-
-
+<head>
+    <link th:replace="blocks/head">
+    <title> Список пользователей </title></head>
 <body>
-<header>
-    <title> Список пользователей </title>
-</header>
 
 
 <div class="container-fluid">
@@ -19,7 +16,7 @@
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-                <h2>Список пользователей</h2><br><br>
+                <h2 class="title-page-admin">Список пользователей</h2><br><br>
             </div>
 
 
@@ -41,7 +38,7 @@
                         <tr>
                             <td th:text="${el.username}"></td>
                             <td th:text="${el.roles}"></td>
-                            <td><a th:href="'/user/' + ${el.id}">Редактировать</a></td>
+                            <td><a class="admin-link" th:href="'/user/' + ${el.id}">Редактировать</a></td>
                         </tr>
                     </div>
                     </tbody>

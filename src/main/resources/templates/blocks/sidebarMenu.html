@@ -1,40 +1,43 @@
-
 <nav id="sidebarMenu" th:fragment="sidebarMenu">
     <a class="ui-menu-icon" href="/">
         <img align="center" src="/img/icon.png" height="70">
     </a>
-    <a class="navbar-brand " href="">
-        <h1>FilmDist</h1></a>
+    <a class="navbar-brand" href="/"><h1>FilmDist</h1></a>
     <div class="position-sticky pt-3">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" th:href="@{/}">
-                    <span data-feather="home"></span>
+                <a class="nav-link" th:classappend="${page == 'film' ? 'active':''}" th:href="@{/}">
                     Кинопрокат
                 </a>
             </li>
 
             <li class="nav-item" href="#">
-                <a class="nav-link" th:href="@{/filmpremiere}">
-                    <span data-feather="shopping-cart"></span>
+                <a class="nav-link" th:classappend="${page == 'filmpremiere' ? 'active':''}" th:href="@{/filmpremiere}">
                     Скоро в кино
                 </a>
             </li>
+
+
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/statistic}">
-                    <span data-feather="users"></span>
+                <a class="nav-link"  th:classappend="${page == 'filmnet' ? 'active':''}" th:href="@{/filmnet}">
+                    Киносети
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${page == 'statistic' ? 'active':''}" th:href="@{/statistic}">
                     Статистика
                 </a>
             </li>
+
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/filmnet}">
-                    <span data-feather="bar-chart-2"></span>
-                    Киносеть
+                <a class="nav-link" th:classappend="${page == 'rating' ? 'active':''}" th:href="@{/film/rating}">
+                    Рейтинг
                 </a>
             </li>
+
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/about-author}">
-                    <span data-feather="bar-chart-2"></span>
+                <a class="nav-link" th:classappend="${page == 'about-author' ? 'active':''}" th:href="@{/about-author}">
                     Об авторе
                 </a>
             </li>

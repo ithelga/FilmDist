@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link th:replace="blocks/head">
+    <title>Рейтинг</title></head>
+
+
+<body>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+            <nav id="sidebarMenu" th:insert="blocks/sidebarMenu :: sidebarMenu"></nav>
+        </div>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                <div class="block-like">
+                    <a th:href="@{/film/rating}" class="like-a pink-link-dark">Фильмы</a>
+                    <a th:href="@{/filmnet/rating}" id="link-m" class="like-a pink-link">Киносети</a>
+                </div>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <nav class="navbar navbar-expand" aria-label="Second navbar example">
+                        <div class="container-fluid">
+                            <div class="collapse navbar-collapse" id="navbarsExample02">
+                                <ul class="navbar-nav me-auto p-3">
+                                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                                        <a class="admin-link" aria-current="page"
+                                           th:href="@{/user}">Пользователи</a>
+                                    </li>
+
+                                </ul>
+
+                                <ul class="navbar-nav me-auto p-3">
+
+
+                                    <li sec:authorize="isAuthenticated ()" class="nav-item">
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/logout}">Выйти</a>
+                                    </li>
+
+                                    <li sec:authorize="!isAuthenticated ()" class="nav-item">
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/login}">Войти</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </nav>
+
+
+                </div>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+
+                <div class="container">
+                    <h2 align="center">Рейтинг Киносетей</h2>
+                    <div id="container" style="width: 700px; height: 600px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script th:inline="javascript">
+
+    let map = [[${mapNet}]];
+    let data = []
+    for (let key in map) data.push([key, map[key]])
+
+
+    Highcharts.chart('container', {
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 50,
+                beta: 0
+            }
+        },
+        title: {
+            text: 'По количеству фильмов в прокате'
+        },
+        subtitle: {
+            text: 'Рейтинг'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }
+        },
+        series: [{
+            colors: ['black', '#F3BE00', '#CD3278', '#E12468', '#474747', '#F9FFB4', '#FBD0DF', '#C71585', '#800080', '#AB82FF', '#EE3A8C', '#DB7093', '#D02090', 'DodgerBlue', '#9F79EE', '#5D478B', '#8968CD'],
+            type: 'pie',
+            name: 'Доля',
+            data: data
+        }]
+    });
+</script>
+</body>
+</html>

@@ -1,6 +1,10 @@
 package org.example.filmdist.models;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -11,10 +15,10 @@ public class FilmNet {
     private Long id;
     private String nameFilmNet;
     private String linkFilmNet;
+    private String filename;
 
-    public FilmNet() {
 
-    }
+    public FilmNet() {}
 
     public Long getId() {
         return id;
@@ -38,6 +42,14 @@ public class FilmNet {
 
     public void setLinkFilmNet(String link) {
         this.linkFilmNet = link;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public FilmNet(String nameFilmNet, String linkFilmNet) {

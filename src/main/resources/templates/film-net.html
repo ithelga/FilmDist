@@ -1,11 +1,12 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:insert="blocks/head :: head"></head>
+<head>
+    <link th:replace="blocks/head">
+    <title> Киносети </title>
+</head>
 <body>
-<header>
-    <title> Киносеть </title>
-</header>
+
 
 <div class="container-fluid">
     <div class="row row-main">
@@ -17,7 +18,8 @@
 
 
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-                <h2>Киносеть</h2>
+
+                <h2 class="title-page">Киносети</h2>
                 <div class="btn-toolbar mb-2 mb-md-0">
 
                     <nav class="navbar navbar-expand" aria-label="Second navbar example">
@@ -27,28 +29,29 @@
                             <div class="collapse navbar-collapse" id="navbarsExample02">
                                 <ul class="navbar-nav me-auto p-3">
                                     <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
-                                        <a class="nav-link active" aria-current="page"
+                                        <a class="admin-link" aria-current="page"
                                            th:href="@{/user}">Пользователи</a>
                                     </li>
                                     <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
-                                        <a class="nav-link active" aria-current="page"
+                                        <a class="admin-link" aria-current="page"
                                            th:href="@{/filmnet/add}">Добавить</a>
                                     </li>
 
 
                                 </ul>
-                                <form>
-                                    <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                                <form th:action="@{/searchFilmNet}">
+                                    <input class="form-control search-input  submit_on_enter" name="param" type="text"
+                                           placeholder="Поиск" th:value="${searchParam}" aria-label="Search">
                                 </form>
                                 <ul class="navbar-nav me-auto p-3">
 
 
                                     <li sec:authorize="isAuthenticated ()" class="nav-item">
-                                        <a class="nav-link active" aria-current="page" th:href="@{/logout}">Выйти</a>
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/logout}">Выйти</a>
                                     </li>
 
                                     <li sec:authorize="!isAuthenticated ()" class="nav-item">
-                                        <a class="nav-link active" aria-current="page" th:href="@{/login}">Войти</a>
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/login}">Войти</a>
                                     </li>
                                 </ul>
 
@@ -61,43 +64,43 @@
             </div>
 
 
-            <div class="table-inverse table-net">
-                <table class="table table-sm table-hover">
-                    <thead>
-                    <tr>
-                        <div class="head_table">
-                            <th>Название</th>
-                            <th>Ссылка</th>
-                            <th sec:authorize="hasAuthority('ADMIN')">Редактировать</th>
-                            <th sec:authorize="hasAuthority('ADMIN')">Удалить</th>
+            <div class="product">
+                <div class="row m-0 p-0">
+                    <div class="col-xl-12 col-md-12 col-lg-12 p-0 m-0">
+                        <div class="chain">
+                            <div class="row m-0 line_pro" th:each="el: ${filmnet}">
+                                <a class="block-icon" th:href="'/filmnet/' + ${el.id}">
+                                    <img class="header-icon" th:src="'/images/' + ${el.filename}">
+                                    <p class="header-subtitle usn" th:text="${el.nameFilmNet}"></p>
+                                </a>
+                            </div>
                         </div>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <div th:each="el: ${filmnet}">
-                        <tr>
-                            <td th:text="${el.nameFilmNet}"></td>
-                            <td><a th:href="${el.linkFilmNet}" th:text="${el.linkFilmNet}"></a></td>
-                            <td sec:authorize="hasAuthority('ADMIN')"><a class="nav-link cino-link"
-                                                                         th:href="'/filmnet/' + ${el.id}+'/edit'">
-                                Редактировать</a></td>
-                            <td sec:authorize="hasAuthority('ADMIN')">
-                                <a class="nav-link cino-link"
-                                   th:href="'/filmnet/' + ${el.id}+'/remove'">Удалить</a>
-                            </td>
-                        </tr>
                     </div>
+                </div>
 
 
-                    </tbody>
-                </table>
             </div>
+
+
         </main>
     </div>
+
+
 </div>
 <script>
     $('tr[data-href]').on("click", function () {
         document.location = $(this).data('href');
+    });
+
+    $(document).ready(function () {
+
+        $('.submit_on_enter').keydown(function (event) {
+            if (event.keyCode === ondragenter()) {
+                this.form.submit();
+                return false;
+            }
+        });
+
     });
 </script>
 

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <link th:replace="blocks/head">
+    <title th:text="${filmNet.nameFilmNet}"></title></head>
+<body>
+
+<div class="container-fluid">
+    <div class="row row-main">
+        <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+
+            <nav id="sidebarMenu" th:insert="blocks/sidebarMenu :: sidebarMenu"></nav>
+        </div>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                <h2 class="title-page" th:text="${filmNet.nameFilmNet}"></h2>
+
+
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <nav class="navbar navbar-expand" aria-label="Second navbar example">
+                        <div class="container-fluid">
+                            <div class="collapse navbar-collapse" id="navbarsExample02">
+                                <ul class="navbar-nav me-auto p-3">
+                                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                                        <a class="admin-link" aria-current="page"
+                                           th:href="@{/user}">Пользователи</a>
+                                    </li>
+
+                                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+
+                                        <a class="admin-link" aria-current="page"
+                                           th:href="'/filmnet/' + ${filmNet.id}+'/edit'">Редактировать</a>
+                                    </li>
+
+                                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+
+                                        <a class="admin-link" aria-current="page"
+                                           th:href="'/filmnet/' + ${filmNet.id}+'/remove'">Удалить</a>
+                                    </li>
+                                </ul>
+
+                                <form th:action="@{/searchFilm}">
+                                    <input class="form-control search-input  submit_on_enter" name="param" type="text"
+                                           placeholder="Поиск" th:value="${searchParam}" aria-label="Search">
+                                </form>
+                                <ul class="navbar-nav me-auto p-3">
+
+                                    <li sec:authorize="isAuthenticated ()" class="nav-item">
+                                        <a class="nav-link pink-link" aria-current="page"
+                                           th:href="@{/logout}">Выйти</a>
+                                    </li>
+
+                                    <li sec:authorize="!isAuthenticated ()" class="nav-item">
+                                        <a class="nav-link pink-link" aria-current="page"
+                                           th:href="@{/login}">Войти</a>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+                        </div>
+                    </nav>
+
+
+                </div>
+            </div>
+
+            <div class="row align-items-top m-0 p-0">
+                <div class="col-xl-8 col-lg-8 m-0 p-0">
+                    <div class="table-inverse">
+                        <table class="table table-sm table-hover table_film">
+                            <thead>
+                            <tr>
+                                <div class="head_table">
+                                    <th><a class="btn button-head  p-0 m-0" href="/netsort?k=name">
+                                        Название фильма
+                                        <img class="img-fluid align-right" th:if="${key=='name'}"
+                                             th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'"
+                                             width="30"/></a>
+
+                                    </th>
+                                    <th><a class="btn button-head  p-0 m-0" href="/netsort?k=releaseDate">Дата релиза
+                                        <img class="img-fluid align-right" th:if="${key=='releaseDate'}"
+                                             th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'"
+                                             width="30"/>
+                                    </a></th>
+                                    <th><a class="btn button-head  p-0 m-0" href="/netsort?k=stars">Звезды
+                                        <img class="img-fluid align-right" th:if="${key=='stars'}"
+                                             th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'"
+                                             width="30"/>
+                                    </a>
+                                    </th>
+                                </div>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <div th:each="f: ${selectNet}" th:if="${filmNet.id==f.filmNetId}">
+                                <tr th:data-href="${(date >= f.releaseDate ? '/film/' : '/filmpremiere/') + f.filmId}">
+
+                                    <td th:text="${f.nameFilm}"></td>
+                                    <td th:text="${f.releaseDate}"></td>
+                                    <td><img alt="" src="/img/star.svg" width="24px" th:if="${filmNet.id==f.filmNetId}"
+                                             th:each="i:${#numbers.sequence(0, f.stars-1)}"></td>
+
+                                </tr>
+                            </div>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-lg-4">
+                    <a th:href="${filmNet.linkFilmNet}"><img th:src="'/images/' + ${filmNet.filename}" width="90%"></a>
+                    <a class="btn btn-pink-small" th:href="${filmNet.linkFilmNet}"> Перейти на веб-сайт</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script>
+    $('tr[data-href]').on("click", function () {
+        document.location = $(this).data('href');
+    });
+</script>
+
+</body>
+</html>

@@ -11,6 +11,9 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
+
+    private String referrer;
+
     @GetMapping("/login-error")
     public String login(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
@@ -25,4 +28,20 @@ public class LoginController {
         model.addAttribute("errorMessage", "Неверные данные. Попробуйте еще раз");
         return "login";
     }
+
+    @GetMapping("/login")
+    public String login(HttpServletRequest request) {
+        referrer = request.getHeader("referer");
+        return "login";
+
+    }
+
+    @GetMapping("/login/success")
+    public String loginsuccess() {
+        if (referrer == null || referrer.equals("") || referrer.endsWith("/registration") || referrer.endsWith("/login"))
+            return "redirect:/";
+        return "redirect:" + referrer;
+    }
+
+
 }

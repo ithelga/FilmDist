@@ -1,8 +1,11 @@
 package org.example.filmdist.models;
 
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -13,24 +16,27 @@ public class Film {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "film_id")
-//    private Set<FilmOnNet> FilmOnNet;
-//
-//    public Set<org.example.filmdist.models.FilmOnNet> getFilmOnNet() {
-//        return FilmOnNet;
-//    }
-//
-//    public void setFilmOnNet(Set<org.example.filmdist.models.FilmOnNet> filmOnNet) {
-//        FilmOnNet = filmOnNet;
-//    }
-
-    private String nameFilm, genre, distributor, filename;
-    private int ageLimit, countShows, countViewer, countFees, stars;
+    private String nameFilm, genre, distributor, filename, linkTrailer;
+    private int ageLimit, countShows, countViewer, stars;
+    private Long countFees;
 
     @Temporal(TemporalType.DATE)
     Date releaseDate;
+
+    public Film() {
+    }
+
+    public Film(String nameFilm, String genre, String distributor, int ageLimit, int countShows, int countViewer, Long countFees, int stars, Date releaseDate) {
+        this.nameFilm = nameFilm;
+        this.genre = genre;
+        this.distributor = distributor;
+        this.ageLimit = ageLimit;
+        this.countShows = countShows;
+        this.countViewer = countViewer;
+        this.countFees = countFees;
+        this.stars = stars;
+        this.releaseDate = releaseDate;
+    }
 
     public Long getId() {
         return id;
@@ -88,11 +94,11 @@ public class Film {
         this.countViewer = countViewer;
     }
 
-    public int getCountFees() {
+    public Long getCountFees() {
         return countFees;
     }
 
-    public void setCountFees(int countFees) {
+    public void setCountFees(Long countFees) {
         this.countFees = countFees;
     }
 
@@ -120,18 +126,15 @@ public class Film {
         this.filename = filename;
     }
 
-    public Film() {
+    public String getLinkTrailer() {
+        return linkTrailer;
     }
 
-    public Film(String nameFilm, String genre, String distributor, int ageLimit, int countShows, int countViewer, int countFees, int stars, Date releaseDate) {
-        this.nameFilm = nameFilm;
-        this.genre = genre;
-        this.distributor = distributor;
-        this.ageLimit = ageLimit;
-        this.countShows = countShows;
-        this.countViewer = countViewer;
-        this.countFees = countFees;
-        this.stars = stars;
-        this.releaseDate = releaseDate;
+    public void setLinkTrailer(String linkTrailer) {
+        this.linkTrailer = linkTrailer;
     }
+
+
+
+
 }

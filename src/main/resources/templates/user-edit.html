@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:insert="blocks/head :: head"></head>
+<head>
+    <link th:replace="blocks/head">
+    <title> Редактирование пользователя </title></head>
 <body>
-<header>
-    <title> Редактирование пользователя </title>
-</header>
+
 
 <div class="container-fluid">
     <div class="row row-main">
@@ -17,21 +17,23 @@
             <div class="form-edit-user">
                 <div class="text-center">
                     <form action="/user" method="post">
-                        <h1 class="h3 mb-3 fw-normal">Редактирование профиля </h1>
+                        <h1 class="h3 mb-3 fw-normal title-page-admin">Редактирование профиля </h1>
+                        <div class="alert-admin" th:if="${message}" th:text="${message}"></div>
 
                         <div class="form-floating">
-                            <input type="text" name="username" class="form-control" th:value="${user.username}">
+                            <input type="text" name="username" class="form-control admin-input" th:value="${user.username}"
+                                   required>
                         </div>
 
                         <div class="role-checkbox">
                             <td th:each="role : ${roles}">
-                                <input type="checkbox" class="custom-checkbox" th:id="${role}" th:name="${role}"
+                                <input type="checkbox" class="custom-checkbox" th:id="${role}" th:name="${role} "
                                        th:checked="${#lists.contains(user.roles, role)}">
                                 <label th:for="${role}" th:text="${role}"></label>
                             </td>
 
                         </div>
-                        <button class="btn btn-orange" type="submit">Save</button>
+                        <button class="btn btn-yellow" type="submit">Сохранить</button>
                         <input type="hidden" th:value="${user.id}" name="id">
                     </form>
                 </div>

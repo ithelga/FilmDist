@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:insert="blocks/head :: head"></head>
+<head>
+    <link th:replace="blocks/head">
+    <title> Регистрация </title></head>
 <body>
-<header>
-    <title> Регистрация </title>
-</header>
+
 
 <div class="container-fluid">
     <div class="row row-main">
@@ -19,14 +19,14 @@
                 <main class="form-signin">
                     <div class="alert" th:if="${message}" th:text="${message}"></div>
                     <form th:action="@{/registration}" method="post">
-                        <h1 class="h3 mb-3 fw-normal">Регистрация</h1>
+                        <h1 class="h3 mb-3 fw-normal title-page">Регистрация</h1>
                         <div class="form-floating">
-                            <input type="text" name="username" class="form-control" placeholder="логин"/>
+                            <input type="text" name="username" class="form-control search-input" placeholder="логин" required/>
                         </div>
                         <div class="form-floating">
-                            <input type="password" name="password" class="form-control" placeholder="пароль">
+                            <input type="password" name="password" class="form-control search-input" placeholder="пароль" required/>
                         </div>
-                        <button class="btn btn-orange" type="submit">Зарегистрироваться</button>
+                        <button class="btn btn-pink" type="submit">Зарегистрироваться</button>
                     </form>
                     <p> У Вас уже есть учетная запись?
                         <a th:href="@{/login}"> <br>Войти</a>

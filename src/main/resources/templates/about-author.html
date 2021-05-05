@@ -1,13 +1,12 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:insert="blocks/head :: head"></head>
+<head>
+    <link th:replace="blocks/head">
+    <title>Об авторе</title></head>
 
 
 <body>
-<header>
-    <title>Об авторе</title>
-</header>
 
 
 <div class="container-fluid">
@@ -17,29 +16,25 @@
         </div>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-                <h2>Об авторе</h2>
+                <h2 class="title-page">Об авторе</h2>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <nav class="navbar navbar-expand" aria-label="Second navbar example">
                         <div class="container-fluid">
                             <div class="collapse navbar-collapse" id="navbarsExample02">
                                 <ul class="navbar-nav me-auto p-3">
                                     <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
-                                        <a class="nav-link active" aria-current="page"
+                                        <a class="admin-link" aria-current="page"
                                            th:href="@{/user}">Пользователи</a>
                                     </li>
                                 </ul>
-                                <form>
-                                    <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-                                </form>
+
                                 <ul class="navbar-nav me-auto p-3">
-
-
                                     <li sec:authorize="isAuthenticated ()" class="nav-item">
-                                        <a class="nav-link active" aria-current="page" th:href="@{/logout}">Выйти</a>
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/logout}">Выйти</a>
                                     </li>
 
                                     <li sec:authorize="!isAuthenticated ()" class="nav-item">
-                                        <a class="nav-link active" aria-current="page" th:href="@{/login}">Войти</a>
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/login}">Войти</a>
                                     </li>
                                 </ul>
 
@@ -48,6 +43,35 @@
                     </nav>
 
 
+                </div>
+            </div>
+
+            <div class="row align-items-center m-0 p-0">
+                <div class="col-xl-3 col-lg-3 m-0 p-0">
+                    <img src="/img/autor.jpg" alt="" height="400px">
+                </div>
+                <div class="col-xl-9 col-lg-9 m-0 p-0">
+                    <div class="about">
+
+                        <h4>О продукте</h4>
+                        <ul>
+                            <li>Бренд: FilmDist</li>
+                            <li>Информационно-справочная система "Кинопроката"</li>
+                            <li>Технология: RESTful Web-сервис</li>
+                        </ul>
+
+                        <h4>О разработчике</h4>
+                        <ul>
+                            <li>FrontEnd разработчик, BackEnd разработчик, Дизайнер - Тетенева Ольга</li>
+                        </ul>
+
+                        <h4>Контакты</h4>
+                        <ul>
+                            <li>Почта: oteteneva02@gmail.com</li>
+                            <li>Телеграм: @it_olechka</li>
+
+                        </ul>
+                    </div>
                 </div>
             </div>
 

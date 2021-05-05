@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link th:replace="blocks/head">
+    <title>Рейтинг</title></head>
+
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+            <nav id="sidebarMenu" th:insert="blocks/sidebarMenu :: sidebarMenu"></nav>
+        </div>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                <div class="block-like">
+                    <a th:href="@{/film/rating}" class="like-a pink-link">Фильмы</a>
+                    <a th:href="@{/filmnet/rating}" id="link-m" class="like-a pink-link-dark">Киносети</a>
+                </div>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <nav class="navbar navbar-expand" aria-label="Second navbar example">
+                        <div class="container-fluid">
+                            <div class="collapse navbar-collapse" id="navbarsExample02">
+                                <ul class="navbar-nav me-auto p-3">
+                                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                                        <a class="admin-link" aria-current="page"
+                                           th:href="@{/user}">Пользователи</a>
+                                    </li>
+
+                                </ul>
+
+                                <ul class="navbar-nav me-auto p-3">
+
+
+                                    <li sec:authorize="isAuthenticated ()" class="nav-item">
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/logout}">Выйти</a>
+                                    </li>
+
+                                    <li sec:authorize="!isAuthenticated ()" class="nav-item">
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/login}">Войти</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </nav>
+
+
+                </div>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                <div>
+                    <h2 align="center">Самые кассовые фильмы</h2>
+
+                    <div id="container"
+                         style="width: 550px; height: 400px; margin: 0 auto"></div>
+                </div>
+
+                <div>
+                    <h2 align="center">Самые титулованные фильмы</h2>
+
+                    <div id="container2"
+                         style="width: 550px; height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                <div>
+                    <h2 align="center">Лидеры по экранам</h2>
+
+                    <div id="container3"
+                         style="width: 550px; height: 400px; margin: 0 auto"></div>
+                </div>
+
+                <div>
+                    <h2 align="center">Лидеры по просмотрам</h2>
+
+                    <div id="container4"
+                         style="width: 550px; height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+<script>
+    $('tr[data-href]').on("click", function () {
+        document.location = $(this).data('href');
+    });
+
+    $(document).ready(function () {
+
+        $('.submit_on_enter').keydown(function (event) {
+            if (event.keyCode === ondragenter()) {
+                this.form.submit();
+                return false;
+            }
+        });
+
+    });
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script th:inline="javascript">
+    $(function () {
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'TOP-5'
+            },
+            subtitle: {
+                text: 'Рейтинг'
+            },
+
+            xAxis: {
+                categories: [[${mapFees.keySet()}]],
+                crosshair: true,
+            },
+            yAxis: {
+                min: 0,
+                max: 1000,
+                title: {
+                    text: 'Сборы в млн рублей'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:#F82973;padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} млн</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Фильмы',
+                data: [[${mapFees.values()}]],
+                color: '#F82973'
+            }]
+        });
+    });
+</script>
+<script th:inline="javascript">
+    $(function () {
+        Highcharts.chart('container2', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'TOP-5'
+            },
+            subtitle: {
+                text: 'Рейтинг'
+            },
+
+            xAxis: {
+                categories: [[${mapStars.keySet()}]],
+                crosshair: true,
+            },
+            yAxis: {
+                min: 0,
+                max: 5,
+                title: {
+                    text: 'Звезды'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:#F82973;padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f}  </b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Фильмы',
+                data: [[${mapStars.values()}]],
+                color: '#F82973'
+            }]
+        });
+    });
+</script>
+<script th:inline="javascript">
+    $(function () {
+        Highcharts.chart('container3', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'TOP-5'
+            },
+            subtitle: {
+                text: 'Рейтинг'
+            },
+
+            xAxis: {
+                categories: [[${mapShows.keySet()}]],
+                crosshair: true,
+            },
+            yAxis: {
+                min: 0,
+                max: 2000,
+                title: {
+                    text: 'Экраны'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:#F82973;padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Фильмы',
+                data: [[${mapShows.values()}]],
+                color: '#F82973'
+            }]
+        });
+    });
+</script>
+<script th:inline="javascript">
+    $(function () {
+        Highcharts.chart('container4', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'TOP-5'
+            },
+            subtitle: {
+                text: 'Рейтинг'
+            },
+
+            xAxis: {
+                categories: [[${mapViewer.keySet()}]],
+                crosshair: true,
+            },
+            yAxis: {
+                min: 0,
+                max: 5000,
+                title: {
+                    text: 'Просмотры в тыс'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:#F82973;padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} тыс</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Фильмы',
+                data: [[${mapViewer.values()}]],
+                color: '#F82973'
+            }]
+        });
+    });
+</script>
+
+
+</body>
+</html>

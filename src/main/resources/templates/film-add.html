@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:insert="blocks/head :: head"></head>
+<head>
+    <link th:replace="blocks/head">
+    <title> Добавление фильма </title></head>
 <body>
-<header>
-    <title> Добавление фильма </title>
-</header>
+
 
 <div class="container-fluid">
     <div class="row row-main">
@@ -16,93 +16,133 @@
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
                 <div class="container mt-5 mb-5">
-                    <h1>Добавление фильма</h1>
+
+
+                    <h2 class="title-page-admin">Добавление фильма</h2>
                     <form th:action="@{/film/add}" method="post" enctype="multipart/form-data" class="edit-film">
-
-                        <br><input type="text" name="nameFilm" placeholder="Введите название фильма"
-                                   class="form-control">
-                        <br>
-                        <div class="container p-0">
-                            <select name="stars">
-                                <option selected value="Не выбрано">Выберите количество звезд</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
+                        <div class="alert-admin" th:if="${message}" th:text="${message}"></div>
+                        <div class="row">
+                            <div class="col-md-7">
 
 
-                        <br><input type="date" name="releaseDate" pattern="yyyy-MM-dd" placeholder="Введите дату выхода"
-                                   class="form-control">
-                        <!--                        <br><input type="text" name="genre" placeholder="Введите жанр" class="form-control">-->
-
-                        <br>
-                        <div class="container p-0">
-                                <select name="genre">
-                                    <option selected value="Не выбрано">Выберите жанр</option>
-                                    <option>Комедия</option>
-                                    <option>Драма</option>
+                                <br>
+                                <label class="admin-link">Название фильма</label>
+                                <input type="text" name="nameFilm" placeholder="Введите название фильма"
+                                       class="form-control admin-input" required>
+                                <br>
+                                <label class="admin-link">Количество звезд</label>
+                                <select name="stars" class="form-control admin-input">
+                                    <option value="0">Выберите количество звезд</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
                                 </select>
-                        </div>
+
+                                <br>
+                                <label class="admin-link">Дата выхода</label>
+                                <input type="date" name="releaseDate" pattern="yyyy-MM-dd"
+                                       placeholder="Выберите дату выхода"
+                                       class="form-control admin-input" required>
 
 
-                        <br><input type="text" name="distributor" placeholder="Введите дистрибьютора"
-                                   class="form-control">
-                        <br><input type="text" name="countViewer" placeholder="Введите количество экранов"
-                                   class="form-control">
-                        <br><input type="text" name="countShows" placeholder="Введите количество показов"
-                                   class="form-control">
-                        <br><input type="text" name="countFees" placeholder="Введите количество сборов"
-                                   class="form-control">
-<!--                        <br><input type="text" name="ageLimit" placeholder="Введите возрастное ограничение"-->
-<!--                                   class="form-control">-->
+                                <br>
+                                <label class="admin-link">Жанр</label>
+                                <select name="genre" class="form-control admin-input">
+                                    <option value="Неизвестно">Выберите жанр</option>
+                                    <option>Анимация</option>
+                                    <option>Биография</option>
+                                    <option>Боевик</option>
+                                    <option>Детектив</option>
+                                    <option>Документальный</option>
+                                    <option>Драма</option>
+                                    <option>Комедия</option>
+                                    <option>Криминал</option>
+                                    <option>Мистика</option>
+                                    <option>Мелодрама</option>
+                                    <option>Приключение</option>
+                                    <option>Спорт</option>
+                                    <option>Семейный</option>
+                                    <option>Триллер</option>
+                                    <option>Ужасы</option>
+                                    <option>Фантастика</option>
+                                    <option>Экшен</option>
+                                </select>
 
-                        <div class="container p-0">
-                            <select name="ageLimit">
-                                <option selected value="Не выбрано">Выберите возрастное ограничение</option>
-                                <option value="0">0+</option>
-                                <option value="6">6+</option>
-                                <option value="12">12+</option>
-                                <option value="16">16+</option>
-                                <option value="18">18+</option>
-                            </select>
-                        </div>
+                                <br>
+                                <label class="admin-link">Дистрибьютор</label>
+                                <input type="text" name="distributor" placeholder="Введите дистрибьютора"
+                                       class="form-control admin-input" required>
+                                <br>
+                                <label class="admin-link">Количество зрителей</label>
+                                <input type="number" name="countViewer" placeholder="Введите количество зрителей"
+                                       class="form-control admin-input" max="10000000">
+                                <br>
+                                <label class="admin-link">Количество экранов</label>
+                                <input type="number" name="countShows" placeholder="Введите количество экранов"
+                                       class="form-control admin-input" max="100000">
+
+                                <br>
+                                <label class="admin-link">Количество сборов</label>
+                                <input type="number" name="countFees" placeholder="Введите количество сборов"
+                                       class="form-control admin-input" max="100000000000">
+
+                                <br>
+                                <label class="admin-link">Возрастное ограничение</label>
+                                <select name="ageLimit" class="form-control admin-input">
+                                    <option selected value="0">Выберите возрастное ограничение</option>
+                                    <option value="0">0+</option>
+                                    <option value="6">6+</option>
+                                    <option value="12">12+</option>
+                                    <option value="16">16+</option>
+                                    <option value="18">18+</option>
+                                </select>
 
 
-                        <br>
-                        <p> Выберите киносети, которые показывают фильм:</p>
-                        <div class="film-checkbox">
-                            <td th:each="el : ${filmnet}">
-                                <div>
-                                    <input type="checkbox" class="custom-checkbox" th:id="${el.id}"
-                                           th:name="${el.nameFilmNet}">
-                                    <label th:for="${el.id}" th:text="${el.nameFilmNet}"></label>
+                                <br>
+                                <label class="admin-link">Ссылка на трейлер</label>
+                                <input type="text" name="linkTrailer" placeholder="Добавьте ссылку на Трейлер"
+                                       class="form-control admin-input">
+
+                                <br><input type="file" name="file" id="file" class="input-file">
+                                <label for="file" class="btn btn-tertiary js-labelFile">
+                                    <i class="icon fa fa-check"></i>
+                                    <span class="js-fileName">Выберите логотип для фильма</span>
+                                </label>
+
+
+                            </div>
+
+                            <div class="col-md-5">
+                                <br>
+                                <label class="admin-link">Выберите киносети, которые показывают фильм</label>
+
+                                <div class="film-checkbox">
+                                    <td th:each="el : ${filmnet}">
+                                        <div>
+                                            <input type="checkbox" class="custom-checkbox" th:id="${el.id}"
+                                                   th:name="${el.nameFilmNet}">
+                                            <label th:for="${el.id}" th:text="${el.nameFilmNet}"></label>
+                                        </div>
+                                    </td>
+                                    </td>
                                 </div>
-                            </td>
-                            </td>
-                        </div>
-
-                        <br><input type="file" name="file" id="file" class="input-file">
-                        <label for="file" class="btn btn-tertiary js-labelFile">
-                            <i class="icon fa fa-check"></i>
-                            <span class="js-fileName">Выберите логотип для фильма</span>
-                        </label>
-
-                        <!--                        <img id="upload-img" align="center" width="150" src="/img/logo.png">-->
+                            </div>
 
 
-                        <br><br>
-                        <button type="submit" class="btn btn-orange mt-10">Добавить фильм</button>
-
+                            <div class="col-md-12">
+                                <br><br>
+                                <button type="submit" class="btn btn-yellow mt-10">Добавить фильм</button>
+                            </div>
                     </form>
                 </div>
             </div>
-        </main>
-
-
     </div>
+    </main>
+
+
+</div>
 </div>
 <script>
     $('tr[data-href]').on("click", function () {

@@ -1,0 +1,6 @@
+org.example.filmdist
+org.example.filmdist.config
+org.example.filmdist.controllers
+org.example.filmdist.models
+org.example.filmdist.repo
+org.example.filmdist.service

@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:insert="blocks/head :: head"></head>
+<head>
+    <link th:replace="blocks/head">
+    <title> Добавление фильма </title>
+</head>
 <body>
 <header>
-    <title> Добавление фильма </title>
+
 </header>
 
 <div class="container-fluid">
@@ -18,17 +21,27 @@
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
 
                 <div class="container mt-5 mb-5">
-                    <h1>Добавление киносети</h1>
-                    <form th:action="@{/filmnet/add}" method="post">
-                        <div class="alert" th:if="${message}" th:text="${message}"></div>
-
-                        <br><input type="text" name="nameFilmNet" placeholder="Введите название киносети"
-                                   class="form-control">
-                        <br><input type="text" name="linkFilmNet" placeholder="Добавьте ссылку на сайт киносети"
-                                   class="form-control">
+                    <h2 class="title-page-admin">Добавление киносети</h2>
+                    <form th:action="@{/filmnet/add}" method="post" enctype="multipart/form-data" class="edit-film">
+                        <div class="alert-admin" th:if="${message}" th:text="${message}"></div>
 
                         <br>
-                        <button type="submit" class="btn btn-orange mt-10">Добавить киносеть</button>
+                        <label class="admin-link">Название киносети</label>
+                        <input type="text" name="nameFilmNet" placeholder="Введите название киносети"
+                               class="form-control admin-input" required>
+                        <br>
+                        <label class="admin-link">Ссылка на сайт киносети</label>
+                        <input type="text" name="linkFilmNet" placeholder="Добавьте ссылку на сайт киносети"
+                               class="form-control admin-input" required>
+
+                        <br><input type="file" name="file" id="file" class="input-file">
+                        <label for="file" class="btn btn-tertiary js-labelFile">
+                            <i class="icon fa fa-check"></i>
+                            <span class="js-fileName">Выберите логотип для киносети</span>
+                        </label>
+
+                        <br>
+                        <button type="submit" class="btn btn-yellow mt-10">Добавить киносеть</button>
 
                     </form>
                 </div>
@@ -41,6 +54,51 @@
 <script>
     $('tr[data-href]').on("click", function () {
         document.location = $(this).data('href');
+    });
+
+    (function () {
+        'use strict';
+        $('.input-file').each(function () {
+            var $input = $(this),
+                $label = $input.next('.js-labelFile'),
+                labelVal = $label.html();
+
+            $input.on('change', function (element) {
+                var fileName = '';
+                if (element.target.value) {
+                    let path = element.target.value
+                    fileName = path.split('\\').pop();
+                    // console.log(element.target.value);
+                    // $('#upload-img').attr('src', path)
+                }
+                fileName ? $label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
+
+            });
+        });
+
+    })();
+
+    /*Dropdown Menu*/
+    $('.dropdown').click(function () {
+        $(this).attr('tabindex', 1).focus();
+        $(this).toggleClass('active');
+        $(this).find('.dropdown-menu').slideToggle(300);
+    });
+    $('.dropdown').focusout(function () {
+        $(this).removeClass('active');
+        $(this).find('.dropdown-menu').slideUp(300);
+    });
+    $('.dropdown .dropdown-menu li').click(function () {
+        $(this).parents('.dropdown').find('span').text($(this).text());
+        $(this).parents('.dropdown').find('input').attr('value', $(this).attr('id'));
+    });
+    /*End Dropdown Menu*/
+
+
+    $('.dropdown-menu li').click(function () {
+        var input = '<strong>' + $(this).parents('.dropdown').find('input').val() + '</strong>',
+            msg = '<span class="msg">Hidden input value: ';
+        $('.msg').html(msg + input + '</span>');
     });
 </script>
 

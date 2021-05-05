@@ -1,13 +1,12 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:insert="blocks/head :: head"></head>
+<head>
+    <link th:replace="blocks/head">
+    <title>Кинопрокат</title></head>
 
 
 <body>
-<header>
-    <title>Кинопрокат</title>
-</header>
 
 
 <div class="container-fluid">
@@ -15,32 +14,34 @@
         <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
             <nav id="sidebarMenu" th:insert="blocks/sidebarMenu :: sidebarMenu"></nav>
         </div>
+
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-                <h2>Статистика</h2>
+                <h2 class="title-page">Статистика</h2>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <nav class="navbar navbar-expand" aria-label="Second navbar example">
                         <div class="container-fluid">
                             <div class="collapse navbar-collapse" id="navbarsExample02">
                                 <ul class="navbar-nav me-auto p-3">
                                     <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
-                                        <a class="nav-link active" aria-current="page"
+                                        <a class="admin-link" aria-current="page"
                                            th:href="@{/user}">Пользователи</a>
                                     </li>
 
                                 </ul>
-                                <form>
-                                    <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                                <form th:action="@{/searchStatistic}">
+                                    <input class="form-control search-input submit_on_enter" name="param" type="text"
+                                           placeholder="Поиск" th:value="${searchParam}" aria-label="Search">
                                 </form>
                                 <ul class="navbar-nav me-auto p-3">
 
 
                                     <li sec:authorize="isAuthenticated ()" class="nav-item">
-                                        <a class="nav-link active" aria-current="page" th:href="@{/logout}">Выйти</a>
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/logout}">Выйти</a>
                                     </li>
 
                                     <li sec:authorize="!isAuthenticated ()" class="nav-item">
-                                        <a class="nav-link active" aria-current="page" th:href="@{/login}">Войти</a>
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/login}">Войти</a>
                                     </li>
                                 </ul>
 
@@ -54,37 +55,67 @@
 
 
             <div class="table-inverse">
-                <table class="table table-sm table-hover">
+                <table class="table table-sm table-hover table_film">
                     <thead>
                     <tr>
                         <div class="head_table">
 
-                            <th></th>
-                            <th class="th_head">
-                                <button class="btn btn-light btn p-0 m-0">
-                                    Название
-                                    <!--                            <img class="img-fluid align-bottom" src="filter.svg" width="25">-->
+                            <th><a class="btn button-head  p-0 m-0" href="/sort?k=nameFilm">
+                                Название
+                                <img class="img-fluid align-right" th:if="${key=='nameFilm'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
 
-
-                                </button>
                             </th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
+
+                            <th><a class="btn button-head p-0 m-0" href="/sort?k=distributor">Дистрибьютор
+                                <img class="img-fluid align-right" th:if="${key=='distributor'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
+
+                            </th>
+                            <th><a class="btn button-head p-0 m-0" href="/sort?k=releaseDate">Дата выхода
+                                <img class="img-fluid align-right" th:if="${key=='releaseDate'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
+
+                            </th>
+                            <th><a class="btn button-head p-0 m-0" href="/sort?k=countFees">Сборы
+                                <img class="img-fluid align-right" th:if="${key=='countFees'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
+
+                            </th>
+                            <th><a class="btn button-head p-0 m-0" href="/sort?k=countViewer">Зрители
+                                <img class="img-fluid align-right" th:if="${key=='countViewer'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
+
+                            </th>
+                            <th><a class="btn button-head p-0 m-0" href="/sort?k=countShows">Экраны
+                                <img class="img-fluid align-right" th:if="${key=='countShows'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
+                            </th>
+
+                            <th><a class="btn button-head p-0 m-0" href="/sort?k=ageLimit">ВО
+                                <img class="img-fluid align-right" th:if="${key=='ageLimit'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
+
+                            </th>
+                            <th><a class="btn button-head p-0 m-0" href="/sort?k=stars">Звезды
+                                <img class="img-fluid align-right" th:if="${key=='stars'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
+
+                            </th>
                         </div>
                     </tr>
                     </thead>
                     <tbody>
                     <div th:each="el: ${films}">
-                        <tr th:data-href="'/film/' + ${el.id}">
+                        <tr th:data-href="'/film/' + ${el.id}" th:if="${el.releaseDate <= date}">
                             <td class="film-name" th:text="${el.nameFilm}"></td>
                             <td th:text="${el.distributor}"></td>
                             <td th:text="${el.releaseDate}"></td>
-                            <td th:text="${el.countFees}"></td>
+                            <td th:text="${#numbers.formatInteger(el.countFees/1000000, 0)} +' млн'"></td>
+                            <td th:text="${#numbers.formatInteger(el.countViewer/1000, 0)} +' тыс'"></td>
                             <td th:text="${el.countShows}"></td>
-                            <td th:text="${el.countViewer}"></td>
+                            <td th:text="${el.ageLimit}+'+'"></td>
+                            <td th:text="${el.stars}"></td>
                         </tr>
                     </div>
 
@@ -101,7 +132,19 @@
     $('tr[data-href]').on("click", function () {
         document.location = $(this).data('href');
     });
+
+    $(document).ready(function () {
+
+        $('.submit_on_enter').keydown(function (event) {
+            if (event.keyCode === ondragenter()) {
+                this.form.submit();
+                return false;
+            }
+        });
+
+    });
 </script>
+
 
 </body>
 </html>

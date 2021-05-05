@@ -1,15 +1,13 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:insert="blocks/head :: head"></head>
+<head>
+    <link th:replace="blocks/head">
+    <title>Кинопрокат</title>
+</head>
 
 
 <body>
-<header>
-    <title>Кинопрокат</title>
-</header>
-
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
@@ -17,41 +15,38 @@
         </div>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-                <h2>Кинопрокат</h2>
+                <h2 class="title-page">Кинопрокат</h2>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <nav class="navbar navbar-expand" aria-label="Second navbar example">
                         <div class="container-fluid">
                             <div class="collapse navbar-collapse" id="navbarsExample02">
                                 <ul class="navbar-nav me-auto p-3">
                                     <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
-                                        <a class="nav-link active" aria-current="page"
+                                        <a class="admin-link" aria-current="page"
                                            th:href="@{/user}">Пользователи</a>
                                     </li>
                                     <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
-                                        <a class="nav-link active" aria-current="page"
+                                        <a class="admin-link" aria-current="page"
                                            th:href="@{/film/add}">Добавить</a>
                                     </li>
                                 </ul>
-                                <form>
-                                    <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                                <form th:action="@{/searchFilm}">
+                                    <input class="form-control search-input submit_on_enter" name="param" type="text" placeholder="Поиск" th:value="${searchParam}" aria-label="Search">
                                 </form>
                                 <ul class="navbar-nav me-auto p-3">
 
 
                                     <li sec:authorize="isAuthenticated ()" class="nav-item">
-                                        <a class="nav-link active" aria-current="page" th:href="@{/logout}">Выйти</a>
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/logout}">Выйти</a>
                                     </li>
 
                                     <li sec:authorize="!isAuthenticated ()" class="nav-item">
-                                        <a class="nav-link active" aria-current="page" th:href="@{/login}">Войти</a>
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/login}">Войти</a>
                                     </li>
                                 </ul>
-
                             </div>
                         </div>
                     </nav>
-
-
                 </div>
             </div>
 
@@ -65,56 +60,85 @@
                             <th></th>
                             <th><a class="btn button-head  p-0 m-0" href="/sort?k=nameFilm">
                                 Название
-                                <img class="img-fluid align-right" th:if="${key=='nameFilm'}" th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'"  width="30"/></a>
+                                <img class="img-fluid align-right" th:if="${key=='nameFilm'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
 
                             </th>
                             <th><a class="btn button-head p-0 m-0" href="/sort?k=genre">Жанр
-                                <img class="img-fluid align-right" th:if="${key=='genre'}" th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'"  width="30"/></a>
+                                <img class="img-fluid align-right" th:if="${key=='genre'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
 
                             </th>
                             <th><a class="btn button-head p-0 m-0" href="/sort?k=distributor">Дистрибьютор
-                                <img class="img-fluid align-right" th:if="${key=='distributor'}" th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'"  width="30"/></a>
+                                <img class="img-fluid align-right" th:if="${key=='distributor'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
 
                             </th>
-                            <th>Кинотеатры</th>
                             <th><a class="btn button-head p-0 m-0" href="/sort?k=releaseDate">Дата выхода
-                                <img class="img-fluid align-right" th:if="${key=='releaseDate'}" th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'"  width="30"/></a>
+                                <img class="img-fluid align-right" th:if="${key=='releaseDate'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
 
                             </th>
                             <th><a class="btn button-head p-0 m-0" href="/sort?k=ageLimit">ВО
-                                <img class="img-fluid align-right" th:if="${key=='ageLimit'}" th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'"  width="30"/></a>
+                                <img class="img-fluid align-right" th:if="${key=='ageLimit'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
 
                             </th>
                             <th><a class="btn button-head p-0 m-0" href="/sort?k=stars">Звезды
-                                <img class="img-fluid align-right" th:if="${key=='stars'}" th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'"  width="30"/></a>
+                                <img class="img-fluid align-right" th:if="${key=='stars'}"
+                                     th:src="${direct=='desk'}? '/img/down.svg' : '/img/top.svg'" width="30"/></a>
 
+                            </th>
+                            <th><a class="btn button-head p-0 m-0" th:href="${onlylike == false}? '/findLike': '/findAll'">Избранное
+                                <img class="img-fluid align-right"
+                                     th:src="${onlylike==true}? '/img/like.svg' : '/img/relike.svg'" width="25"/></a>
                             </th>
                         </div>
                     </tr>
                     </thead>
                     <tbody>
+
                     <div th:each="el: ${films}">
-                        <tr th:data-href="'/film/' + ${el.id}" th:if="${el.releaseDate >= date}">
+                        <tr th:data-href="'/film/' + ${el.id}" th:if="${el.releaseDate <= date and onlylike == false}">
+                            <td width="150">
+                                <img align="center" th:src="'/images/' + ${el.filename}" width="150">
+                            </td>
 
-
-                            <td width="200" th:if="${el.filename}"><img align="center"
-                                                                        th:src="'/images/' + ${el.filename}"
-                                                                        width="150"></td>
-
-                            <td class="film-name" th:text="${el.nameFilm}"></td>
+                            <td th:text="${el.nameFilm}"></td>
                             <td th:text="${el.genre}"></td>
                             <td th:text="${el.distributor}"></td>
-                            <td>
-                                <a class="nav-link cino-link"
-                                   href="https://ru.stackoverflow.com/questions/516031/%d0%9f%d0%be%d0%bb%d0%bd%d0%be%d1%81%d1%82%d1%8c%d1%8e-%d1%83%d0%b1%d1%80%d0%b0%d1%82%d1%8c-%d1%80%d0%b0%d1%81%d1%81%d1%82%d0%be%d1%8f%d0%bd%d0%b8%d1%8f-%d0%bc%d0%b5%d0%b6%d0%b4%d1%83-%d1%8f%d1%87%d0%b5%d0%b9%d0%ba%d0%b0%d0%bc%d0%b8-td">Киномакс</a>
-                                <a class="nav-link cino-link" href="#">Каро</a>
-                                <a class="nav-link cino-link" href="#">Кино Окко</a>
-                                <a class="nav-link cino-link" href="#">Москино</a>
-
-                            </td>
                             <td th:text="${el.releaseDate}"></td>
                             <td th:text="${el.ageLimit}+'+'"></td>
                             <td th:text="${el.stars}"></td>
+                            <td>
+                                <a th:href="${#lists.contains(filmIds, el.id)}? '/relike/'+ ${el.id} :'/like/' + ${el.id}">
+                                    <img width="35px"
+                                         th:src="${#lists.contains(filmIds, el.id)}?'/img/like.svg':'/img/relike.svg'"/>
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        <tr th:data-href="'/film/' + ${el.id}" th:if="${el.releaseDate <= date and onlylike == true and #lists.contains(filmIds, el.id)}">
+                            <td width="150">
+                                <img align="center" th:src="'/images/' + ${el.filename}" width="150">
+                            </td>
+
+                            <td th:text="${el.nameFilm}"></td>
+                            <td th:text="${el.genre}"></td>
+                            <td th:text="${el.distributor}"></td>
+                            <td th:text="${el.releaseDate}"></td>
+                            <td th:text="${el.ageLimit}+'+'"></td>
+                            <td th:text="${el.stars}"></td>
+                            <td>
+                                <a th:href="${#lists.contains(filmIds, el.id)}? '/relike/'+ ${el.id} :'/like/' + ${el.id}">
+                                    <img width="35px"
+                                         th:src="${#lists.contains(filmIds, el.id)}?'/img/like.svg':'/img/relike.svg'"/>
+                                </a>
+
+                            </td>
+
                         </tr>
                     </div>
 
@@ -130,6 +154,17 @@
 <script>
     $('tr[data-href]').on("click", function () {
         document.location = $(this).data('href');
+    });
+
+    $(document).ready(function() {
+
+        $('.submit_on_enter').keydown(function(event) {
+            if (event.keyCode === ondragenter()) {
+                this.form.submit();
+                return false;
+            }
+        });
+
     });
 </script>
 

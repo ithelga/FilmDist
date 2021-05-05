@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <link th:replace="blocks/head">
+    <title> Фильм </title></head>
+<body>
+
+
+<div class="container-fluid">
+    <div class="row row-main">
+        <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+
+            <nav id="sidebarMenu" th:insert="blocks/sidebarMenu :: sidebarMenu"></nav>
+        </div>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                <div class="block-like">
+                    <h2 class="title-page like-a m-0" th:text="${film.nameFilm}"></h2>
+                    <a class="like-a"
+                       th:href="${#lists.contains(filmIds, film.id)}? '/relike/'+ ${film.id} :'/like/' + ${film.id}">
+                        <img th:src="${#lists.contains(filmIds, film.id)}?'/img/like.svg':'/img/relike.svg'"/>
+                    </a>
+                </div>
+
+
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <nav class="navbar navbar-expand" aria-label="Second navbar example">
+                        <div class="container-fluid">
+                            <div class="collapse navbar-collapse" id="navbarsExample02">
+                                <ul class="navbar-nav me-auto p-3">
+                                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                                        <a class="admin-link" aria-current="page"
+                                           th:href="@{/user}">Пользователи</a>
+                                    </li>
+
+                                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+
+                                        <a class="admin-link" aria-current="page"
+                                           th:href="'/filmpremiere/' + ${film.id}+'/edit'">Редактировать</a>
+                                    </li>
+
+                                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+
+                                        <a class="admin-link" aria-current="page"
+                                           th:href="'/film/' + ${film.id}+'/remove'">Удалить</a>
+                                    </li>
+
+                                    <li sec:authorize="isAuthenticated ()" class="nav-item">
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/logout}">Выйти</a>
+                                    </li>
+
+                                    <li sec:authorize="!isAuthenticated ()" class="nav-item">
+                                        <a class="nav-link pink-link" aria-current="page" th:href="@{/login}">Войти</a>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+                        </div>
+                    </nav>
+
+
+                </div>
+            </div>
+
+            <div class="row align-items-top m-0 p-0">
+
+                <div class="col-xl-3 col-lg-3 m-0 p-0" th:if="${film.filename}">
+                    <img alt="" th:src="'/images/' + ${film.filename}"
+                         width="90%">
+                </div>
+
+
+                <div class="col-xl-3 col-lg-3 m-0 p-0">
+                    <h3>О фильме</h3>
+                    <div class="block-describ">
+                        <div class="text-label">Жанр:</div>
+                        <div class="text-describ" th:text="${film.genre}"></div>
+                    </div>
+
+                    <div class="block-describ">
+                        <div class="text-label">Дистрибьютор:</div>
+                        <div class="text-describ" th:text="${film.distributor}"></div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 m-0 p-0">
+                    <h3>Когда? </h3>
+
+                    <div class="block-describ">
+                        <div class="text-label">Релиз проката:</div>
+                        <div class="text-describ" th:text="${film.releaseDate}"></div>
+                    </div>
+
+                    <div class="block-describ">
+                        <img alt="" id="ageLimit" th:src="'/img/age_limit' + ${film.ageLimit}+'.svg'"
+                             width="100px">
+                    </div>
+                </div>
+
+
+                <div class="col-xl-3 col-lg-3 m-0 p-0">
+                    <h3>Где посмотреть? </h3>
+                    <a th:each="f: ${selectNet}" class="nav-link cino-link pink-link" th:if="${film.id==f.filmId} "
+                       th:text="${f.nameFilmNet}"
+                       th:href="'/filmnet/'+${f.filmNetId}">
+                    </a>
+
+
+                </div>
+                <div class="col-xl-12 col-lg-12 m-0 p-0">
+                    <br><br>
+                    <h3>Трейлер </h3><br><br>
+
+                    <iframe width="560" height="315" th:src="${film.linkTrailer}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                    </iframe>
+
+
+                </div>
+
+
+            </div>
+
+
+        </main>
+    </div>
+</div>
+<script>
+    $('tr[data-href]').on("click", function () {
+        document.location = $(this).data('href');
+    });
+</script>
+
+</body>
+</html>
