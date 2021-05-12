@@ -20,13 +20,13 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder(5);
-    }
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
+//    @Bean
+//    public PasswordEncoder getPasswordEncoder() {
+//        return new BCryptPasswordEncoder(5);
+//    }
+//
+//    @Autowired
+//    PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserService userService;
@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService)
-                .passwordEncoder(passwordEncoder);
+                .passwordEncoder(new BCryptPasswordEncoder());
 
     }
 

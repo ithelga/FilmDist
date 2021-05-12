@@ -6,6 +6,7 @@ import org.example.filmdist.models.User;
 import org.example.filmdist.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +22,8 @@ public class RegistrationController implements ErrorController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/registration")
     public String registration() {
@@ -38,7 +39,7 @@ public class RegistrationController implements ErrorController {
         }
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
         return "redirect:/login";
     }
