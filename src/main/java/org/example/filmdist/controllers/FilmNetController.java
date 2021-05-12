@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +29,8 @@ import java.util.UUID;
 public class FilmNetController {
 
     private String logoNetDefault = "logo_net_default.png";
-    private Boolean IsSearchFilmNet = false;
-    private String SearchFilmNetParam;
+    private Boolean IsSearchFilmNet = false, IsSearchFilmInNet = false;
+    private String SearchFilmNetParam, SearchFilmInNetParam;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -118,9 +119,14 @@ public class FilmNetController {
         FilmNet filmNet = filmNetRepository.findById(id).orElseThrow();
         model.addAttribute("filmNet", filmNet);
         List<NetJoin> selectNet;
-//        List<NetJoin> selectNet = filmOnNetRepository.findNetsSort("D", sortKey);
 
-        if (sortKey.equals("name")) {
+        if (IsSearchFilmInNet) {
+            System.out.println(IsSearchFilmInNet);
+            System.out.println(SearchFilmInNetParam);
+            selectNet = filmOnNetRepository.searchFilmInNet(SearchFilmInNetParam);
+            System.out.println(selectNet);
+
+        } else if (sortKey.equals("name")) {
             selectNet = sortDirection == Sort.Direction.ASC ? filmOnNetRepository.sortNetsByNameAsc() : filmOnNetRepository.sortNetsByNameDesc();
 
         } else if (sortKey.equals("releaseDate")) {
@@ -132,10 +138,15 @@ public class FilmNetController {
 
         } else selectNet = filmOnNetRepository.sortNetsByNameAsc();
 
+
         model.addAttribute("selectNet", selectNet);
         model.addAttribute("key", sortKey);
         model.addAttribute("direct", sortDirection == Sort.Direction.DESC ? "desk" : "ask");
         model.addAttribute("page", "filmnet");
+
+        model.addAttribute("searchParam", SearchFilmInNetParam);
+        IsSearchFilmInNet = false;
+        SearchFilmInNetParam = "";
         return "film-net-id";
     }
 
@@ -225,6 +236,14 @@ public class FilmNetController {
     public String searchFilmNet(@RequestParam String param, Model model, HttpServletRequest request) {
         IsSearchFilmNet = true;
         SearchFilmNetParam = param;
+        String referrer = request.getHeader("referer");
+        return "redirect:" + referrer;
+    }
+
+    @GetMapping("/searchFilmInNet")
+    public String searchFilm(@RequestParam String param, Model model, HttpServletRequest request) {
+        IsSearchFilmInNet = true;
+        SearchFilmInNetParam = param;
         String referrer = request.getHeader("referer");
         return "redirect:" + referrer;
     }

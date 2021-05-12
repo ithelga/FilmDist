@@ -43,7 +43,7 @@
                                     </li>
                                 </ul>
 
-                                <form th:action="@{/searchFilm}">
+                                <form th:action="@{/searchFilmInNet}">
                                     <input class="form-control search-input  submit_on_enter" name="param" type="text"
                                            placeholder="Поиск" th:value="${searchParam}" aria-label="Search">
                                 </form>
@@ -126,6 +126,17 @@
 <script>
     $('tr[data-href]').on("click", function () {
         document.location = $(this).data('href');
+    });
+
+    $(document).ready(function() {
+
+        $('.submit_on_enter').keydown(function(event) {
+            if (event.keyCode === ondragenter()) {
+                this.form.submit();
+                return false;
+            }
+        });
+
     });
 </script>
 

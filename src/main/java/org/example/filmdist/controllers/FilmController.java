@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,7 @@ public class FilmController {
 
     @Value("${upload.path}")
     private String uploadPath;
+
 
     private void sortFilm(Model model) {
         Iterable<Film> films = filmRepository.findAll(Sort.by(sortDirection, sortKey));
@@ -627,7 +629,6 @@ public class FilmController {
 
 
         List<Film> filmShows = filmRepository.findFilmTop10OrderShows();
-        System.out.println(filmShows);
         Map<String, Integer> mapShows = new LinkedHashMap<>();
         for (Film f : filmShows) {
             mapShows.put(f.getNameFilm(), f.getCountShows());

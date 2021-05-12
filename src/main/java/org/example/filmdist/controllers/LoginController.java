@@ -38,7 +38,7 @@ public class LoginController {
 
     @GetMapping("/login/success")
     public String loginsuccess() {
-        if (referrer == null || referrer.equals("") || referrer.endsWith("/registration") || referrer.endsWith("/login"))
+        if (referrer == null || referrer.equals("") || referrer.contains("/registration") || referrer.contains("/login"))
             return "redirect:/";
         return "redirect:" + referrer;
     }

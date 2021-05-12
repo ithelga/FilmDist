@@ -14,6 +14,11 @@ import java.util.List;
 
 
 public interface FilmOnNetRepository extends JpaRepository<FilmOnNet, Long>, CrudRepository<FilmOnNet, Long> {
+
+    List<FilmOnNet> findByFilm(Film film);
+
+    List<FilmOnNet> findByFilmNet(FilmNet filmnet);
+
     @Query("SELECT new org.example.filmdist.models.NetJoin(fon.film.id, fn.id, f.nameFilm, f.stars, f.releaseDate, " +
             "fn.nameFilmNet, fn.linkFilmNet) FROM FilmOnNet fon " +
             "LEFT JOIN FilmNet fn ON fn.id=fon.filmNet.id " +
@@ -45,7 +50,6 @@ public interface FilmOnNetRepository extends JpaRepository<FilmOnNet, Long>, Cru
     List<NetJoin> sortNetsByStarsDesc();
 
 
-
     @Query("SELECT new org.example.filmdist.models.NetJoin(fon.film.id, fn.id, f.nameFilm, f.stars, f.releaseDate, " +
             "fn.nameFilmNet, fn.linkFilmNet) FROM FilmOnNet fon " +
             "LEFT JOIN FilmNet fn ON fn.id=fon.filmNet.id " +
@@ -59,15 +63,10 @@ public interface FilmOnNetRepository extends JpaRepository<FilmOnNet, Long>, Cru
     List<NetJoin> sortNetsByReleaseDateDesc();
 
 
-//    @Query("SELECT new org.example.filmdist.models.FilmRemove(fon.id, f.id) FROM FilmOnNet fon " +
-//            "LEFT JOIN Film f ON f.id=fon.film.id")
-//    List<NetJoin> findNetsbyFilm();
-
-
-
-
-
-    List <FilmOnNet> findByFilm(Film film);
-    List <FilmOnNet> findByFilmNet(FilmNet filmnet);
-
+    @Query("SELECT new org.example.filmdist.models.NetJoin(fon.film.id, fn.id, f.nameFilm, f.stars, f.releaseDate, " +
+            "fn.nameFilmNet, fn.linkFilmNet) FROM FilmOnNet fon " +
+            "LEFT JOIN FilmNet fn ON fn.id=fon.filmNet.id " +
+            "LEFT JOIN Film f ON f.id=fon.film.id " +
+            "WHERE concat(f.nameFilm, f.releaseDate) LIKE %:param%")
+    List<NetJoin> searchFilmInNet(@Param("param") String param);
 }
