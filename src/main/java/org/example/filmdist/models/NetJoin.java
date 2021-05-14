@@ -4,6 +4,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
+
+/**
+ * Define additional model NetJoin with constructor to SQL-query with new field
+ */
+
 public class NetJoin {
 
     private Long filmId, filmNetId;
@@ -13,7 +18,9 @@ public class NetJoin {
     @Temporal(TemporalType.DATE)
     Date releaseDate;
 
-
+    /**
+     * empty constructor
+     */
     public NetJoin() {
     }
 
@@ -25,8 +32,11 @@ public class NetJoin {
         this.releaseDate = releaseDate;
         this.nameFilmNet = nameFilmNet;
         this.linkFilmNet = linkFilmNet;
-
     }
+
+    /**
+     * getter and setter for attributes
+     */
 
     public Long getFilmId() {
         return filmId;

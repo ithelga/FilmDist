@@ -19,6 +19,12 @@ public class User implements UserDetails {
     private String password;
     private boolean active;
 
+    /**
+     * empty constructor
+     */
+    public User() {
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -27,6 +33,9 @@ public class User implements UserDetails {
         this.active = active;
     }
 
+    /**
+     * connected entity to role
+     */
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(
             name = "user_role",
@@ -42,9 +51,6 @@ public class User implements UserDetails {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User() {
     }
 
     public String getUsername() {

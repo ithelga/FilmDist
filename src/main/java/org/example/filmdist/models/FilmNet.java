@@ -1,11 +1,10 @@
 package org.example.filmdist.models;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
 
+/**
+ * Define model-entity to create DB film_net
+ */
 
 @Entity
 public class FilmNet {
@@ -17,8 +16,24 @@ public class FilmNet {
     private String linkFilmNet;
     private String filename;
 
+    /**
+     * empty constructor
+     */
+    public FilmNet() {
+    }
 
-    public FilmNet() {}
+    /**
+     * constructor with attributes - or field for DB
+     */
+
+    public FilmNet(String nameFilmNet, String linkFilmNet) {
+        this.nameFilmNet = nameFilmNet;
+        this.linkFilmNet = linkFilmNet;
+    }
+
+    /**
+     * getter and setter for attributes
+     */
 
     public Long getId() {
         return id;
@@ -52,8 +67,5 @@ public class FilmNet {
         this.filename = filename;
     }
 
-    public FilmNet(String nameFilmNet, String linkFilmNet) {
-        this.nameFilmNet = nameFilmNet;
-        this.linkFilmNet = linkFilmNet;
-    }
+
 }

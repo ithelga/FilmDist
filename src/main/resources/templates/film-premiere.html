@@ -113,11 +113,11 @@
                             <td th:text="${el.releaseDate}"></td>
                             <td th:text="${el.ageLimit}+'+'"></td>
                             <td>
-                                <a th:href="${#lists.contains(filmIds, el.id)}? '/relike/'+ ${el.id} :'/like/' + ${el.id}">
-                                    <img width="35px"
-                                         th:src="${#lists.contains(filmIds, el.id)}?'/img/like.svg':'/img/relike.svg'"/>
-                                </a>
+                                <img width="35px" src='/img/like.svg' th:if="${#lists.contains(filmIds, el.id)}"
+                                     th:onclick="'like('+ ${el.id} + ', 0, this, event);'"/>
 
+                                <img width="35px" src='/img/relike.svg' th:if="${!#lists.contains(filmIds, el.id)}"
+                                     th:onclick="'like('+ ${el.id} + ', 1, this, event);'"/>
                             </td>
                         </tr>
                         <tr th:data-href="'/filmpremiere/' + ${el.id}"
@@ -131,11 +131,11 @@
                             <td th:text="${el.releaseDate}"></td>
                             <td th:text="${el.ageLimit}+'+'"></td>
                             <td>
-                                <a th:href="${#lists.contains(filmIds, el.id)}? '/relike/'+ ${el.id} :'/like/' + ${el.id}">
-                                    <img width="35px"
-                                         th:src="${#lists.contains(filmIds, el.id)}?'/img/like.svg':'/img/relike.svg'"/>
-                                </a>
+                                <img width="35px" src='/img/like.svg' th:if="${#lists.contains(filmIds, el.id)}"
+                                     th:onclick="'like('+ ${el.id} + ', 0, this, event);'"/>
 
+                                <img width="35px" src='/img/relike.svg' th:if="${!#lists.contains(filmIds, el.id)}"
+                                     th:onclick="'like('+ ${el.id} + ', 1, this, event);'"/>
                             </td>
                         </tr>
                     </div>
@@ -149,6 +149,22 @@
         </main>
     </div>
 </div>
+
+<script type='text/javascript'>
+    function like(id, type, element, event) {
+        event.stopPropagation();
+        if (type == 1) {
+            $.post('like/' + id);
+            element.src = '/img/like.svg'
+            element.setAttribute('onClick', 'like(' + id + ', 0, this, event);')
+        } else {
+            $.post('relike/' + id);
+            element.src = '/img/relike.svg'
+            element.setAttribute('onClick', 'like(' + id + ', 1, this, event);')
+        }
+    }
+
+</script>
 <script>
     $('tr[data-href]').on("click", function () {
         document.location = $(this).data('href');

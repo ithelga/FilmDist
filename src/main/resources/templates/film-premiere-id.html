@@ -20,10 +20,12 @@
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
                 <div class="block-like">
                     <h2 class="title-page like-a m-0" th:text="${film.nameFilm}"></h2>
-                    <a class="like-a"
-                       th:href="${#lists.contains(filmIds, film.id)}? '/relike/'+ ${film.id} :'/like/' + ${film.id}">
-                        <img th:src="${#lists.contains(filmIds, film.id)}?'/img/like.svg':'/img/relike.svg'"/>
-                    </a>
+                    <img width="35px" src='/img/like.svg' th:if="${#lists.contains(filmIds, film.id)}"
+                         th:onclick="'like('+ ${film.id} + ', 0, this, event);'"/>
+
+                    <img width="35px" src='/img/relike.svg' th:if="${!#lists.contains(filmIds, film.id)}"
+                         th:onclick="'like('+ ${film.id} + ', 1, this, event);'"/>
+
                 </div>
 
 
@@ -131,6 +133,22 @@
         </main>
     </div>
 </div>
+
+<script type='text/javascript'>
+    function like(id, type, element, event) {
+        event.stopPropagation();
+        if (type == 1) {
+            $.post('/like/' + id);
+            element.src = '/img/like.svg'
+            element.setAttribute('onClick', 'like(' + id + ', 0, this, event);')
+        } else {
+            $.post('/relike/' + id);
+            element.src = '/img/relike.svg'
+            element.setAttribute('onClick', 'like(' + id + ', 1, this, event);')
+        }
+    }
+
+</script>
 <script>
     $('tr[data-href]').on("click", function () {
         document.location = $(this).data('href');

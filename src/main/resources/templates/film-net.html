@@ -24,8 +24,6 @@
 
                     <nav class="navbar navbar-expand" aria-label="Second navbar example">
                         <div class="container-fluid">
-
-
                             <div class="collapse navbar-collapse" id="navbarsExample02">
                                 <ul class="navbar-nav me-auto p-3">
                                     <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
@@ -36,7 +34,6 @@
                                         <a class="admin-link" aria-current="page"
                                            th:href="@{/filmnet/add}">Добавить</a>
                                     </li>
-
 
                                 </ul>
                                 <form th:action="@{/searchFilmNet}">

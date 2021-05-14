@@ -1,14 +1,13 @@
 package org.example.filmdist.models;
 
-
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+/**
+ * Define model-entity to create DB film
+ */
 
 @Entity
 public class Film {
@@ -23,9 +22,16 @@ public class Film {
     @Temporal(TemporalType.DATE)
     Date releaseDate;
 
+
+    /**
+     * empty constructor
+     */
     public Film() {
     }
 
+    /**
+     * constructor with attributes - or field for DB
+     */
     public Film(String nameFilm, String genre, String distributor, int ageLimit, int countShows, int countViewer, Long countFees, int stars, Date releaseDate) {
         this.nameFilm = nameFilm;
         this.genre = genre;
@@ -37,6 +43,10 @@ public class Film {
         this.stars = stars;
         this.releaseDate = releaseDate;
     }
+
+    /**
+     * getter and setter for attributes
+     */
 
     public Long getId() {
         return id;
@@ -133,8 +143,5 @@ public class Film {
     public void setLinkTrailer(String linkTrailer) {
         this.linkTrailer = linkTrailer;
     }
-
-
-
 
 }
